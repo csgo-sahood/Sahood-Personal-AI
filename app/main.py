@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from fastapi.staticfiles import StaticFiles
 from app.brain import ask_ai
 
 app = FastAPI(
@@ -13,7 +13,11 @@ app = FastAPI(
 )
 
 BASE_DIR = Path(__file__).resolve().parent
-
+app.mount(
+    "/static",
+    StaticFiles(directory=BASE_DIR / "static"),
+    name="static"
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
